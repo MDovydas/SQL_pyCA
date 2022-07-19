@@ -1,0 +1,100 @@
+-- CREATE TABLE order_ (
+--     id INTEGER,
+--     customer_id INTEGER,
+--     date_ STRING,
+--     status_id INTEGER,
+--     PRIMARY KEY(id),
+--     FOREIGN KEY(status_id) REFERENCES status(id),
+--     FOREIGN KEY(customer_id) REFERENCES customer(id)
+-- )
+
+-- CREATE TABLE product_order (
+--     order_id INTEGER,
+--     product_id INTEGER,
+--     quantity INTEGER,
+--     FOREIGN KEY (order_id) REFERENCES order_ (id),
+--     FOREIGN KEY (product_id) REFERENCES product (id)
+--
+-- )
+
+-- CREATE TABLE product (
+--     id INTEGER,
+--     name TEXT,
+--     price REAL,
+--     PRIMARY KEY (id)
+-- )
+
+-- CREATE TABLE status (
+--     id INTEGER,
+--     name TEXT,
+--     PRIMARY KEY (id)
+-- )
+
+-- CREATE TABLE customer (
+--     id INTEGER,
+--     f_name TEXT,
+--     l_name TEXT,
+--     email TEXT,
+--     PRIMARY KEY (id)
+-- )
+
+-------------------
+
+-- INSERT INTO customer (id, f_name, l_name, email) VALUES ("1", "Ponas", "Hipis", "ponas@hipis.lt")
+-- INSERT INTO customer (id, f_name, l_name, email) VALUES ("2", "Eltonas", "Jonas", "eltonas@hjonas.lt")
+-- INSERT INTO customer (id, f_name, l_name, email) VALUES ("3", "Elnias", "Rudolfas", "elnias@rudolfas.lt")
+
+-- INSERT INTO order_ (id, customer_id, date_, status_id) VALUES ("1", "1", date(2022-05-05), "1")
+-- INSERT INTO order_ (id, customer_id, date_, status_id) VALUES ("2", "1", date(2022-06-05), "2")
+-- INSERT INTO order_ (id, customer_id, date_, status_id) VALUES ("3", "2", date(2022-05-07), "1")
+-- INSERT INTO order_ (id, customer_id, date_, status_id) VALUES ("4", "3", date(2022-08-05), "3")
+-- INSERT INTO order_ (id, customer_id, date_, status_id) VALUES ("5", "3", date(2022-05-05), "4")
+
+-- INSERT INTO product (id, name, price) VALUES ("1", "Alus", "5")
+-- INSERT INTO product (id, name, price) VALUES ("2", "Vynas", "4")
+-- INSERT INTO product (id, name, price) VALUES ("3", "Sidras", "7")
+-- INSERT INTO product (id, name, price) VALUES ("4", "Degtinė", "20")
+-- INSERT INTO product (id, name, price) VALUES ("5", "Viskis", "25")
+-- INSERT INTO product (id, name, price) VALUES ("6", "Brendis", "15")
+-- INSERT INTO product (id, name, price) VALUES ("7", "Likeris", "18")
+
+-- INSERT INTO status (id, name) VALUES ("1", "Patvirtintas")
+-- INSERT INTO status (id, name) VALUES ("2", "Vykdomas")
+-- INSERT INTO status (id, name) VALUES ("3", "Įvykdytas")
+-- INSERT INTO status (id, name) VALUES ("4", "Atmestas")
+
+-- INSERT INTO product_order (order_id, product_id, quantity) VALUES ("1", "1", "500")
+-- INSERT INTO product_order (order_id, product_id, quantity) VALUES ("1", "2", "400")
+-- INSERT INTO product_order (order_id, product_id, quantity) VALUES ("1", "4", "50")
+-- INSERT INTO product_order (order_id, product_id, quantity) VALUES ("2", "7", "50")
+-- INSERT INTO product_order (order_id, product_id, quantity) VALUES ("2", "1", "470")
+-- INSERT INTO product_order (order_id, product_id, quantity) VALUES ("3", "6", "50")
+-- INSERT INTO product_order (order_id, product_id, quantity) VALUES ("4", "2", "20")
+-- INSERT INTO product_order (order_id, product_id, quantity) VALUES ("5", "4", "120")
+
+--------------------------------------------
+
+-- SELECT order_.id AS "order id",
+--        order_.date_ AS "date",
+--        l_name AS "customer",
+--        sum(product_order.quantity * product.price)
+-- FROM order_
+-- JOIN product_order ON order_.id = product_order.order_id
+-- JOIN customer ON order_.customer_id = customer.id
+-- JOIN product ON product_order.product_id = product.id
+-- GROUP BY order_id
+
+-- SELECT order_id AS ID,
+--        product.name AS name,
+--        product_order.quantity AS quantity,
+--        product_order.quantity * product.price AS total
+-- FROM product_order
+-- JOIN product ON product_order.product_id = product.id
+
+-- SELECT order_id AS ID,
+--        product.name AS name,
+--        sum(product_order.quantity) AS quantity,
+--        sum(product_order.quantity * product.price) AS total
+-- FROM product_order
+-- JOIN product ON product_order.product_id = product.id
+-- GROUP BY product.name
